@@ -1,0 +1,71 @@
+[3/9/2016 11:45:38 AM] Tiago Peres: WP on
+Underneath there's the entire procedure in case you want to know (i created one alias also to log-out):
+1) Download PuTTY
+2) Open in its folder puttygen
+3) Insert the private key file (amazon-joshfolgado.pem) and turn it into aws.ppk
+5) Connect to the instance using its Public DNS. Launch it.
+    ec2-52-36-21-192.us-west-2.compute.amazonaws.com
+6) Enter with the username: ubuntu
+
+Once i got in,
+- Start with an update:
+   sudo apt-get update
+
+ - Do an upgrade before installing what we need:
+  sudo apt-get dist-upgrade
+
+ - Install Apache
+  sudo apt-get install apache2
+ 
+ - Put the code bellow and see if it's installed
+  Service apache2 start
+
+   - Install a package that provides the PHP5 module for the Apache 2
+   sudo apt-get install libapache2-mod-php5
+
+   - Restart Apache
+  sudo /etc/init.d/apache2 restart
+
+   - Get the necessary premissions for changes made by our user
+  sudo chmod ubuntu /var/www/html
+   chmod 777 /var/www/html  (read write and execute)
+   
+   - Install cURL (i don't know if needed in wordpress, but if we want some e-commerce stuff, magento will need it)
+    sudo apt-get install php5-curl
+
+  - Install MySQL server:
+  sudo apt-get install mysql-server
+  user: root
+  pw: xcvb1234
+
+  - Install 
+  sudo apt-get install php5-mysql
+
+  - Install phpmyadmin
+  sudo apt-get install phpmyadmin
+  Webserver to reconfigure: Apache2
+  (use the same user and pw that were written bellow)
+
+  - Install
+  sudo apt-get install  php5- mcrypt
+
+So far all worked well, then was time for WP
+[3/9/2016 11:54:44 AM] Tiago Peres: For the WP was faster,
+-Get into the following folder:
+cd /var/www/html
+
+- There's an index.html file that must be erased because doesn't have anything to do with what we want
+ rm index.html
+
+- Now instead of using ftp, cause was slower, 
+    wget https://wordpress.org/latest.tar.gz
+
+- It appears an archive that doesn't have the right premissions, must chmod
+ sudo chmod 777 latest.tar.gz
+ ( the file that name, that was red, turned green)
+
+- With the premissions on
+tar xfz latest.tar.gz
+
+ - cause i want WP as root,
+  mv wordpress/* ./

@@ -1,0 +1,50 @@
+Installing Varnish Cache
+
+Varnish Cache is a caching module for Linux. We’ll set up Varnish to listen for HTTP (web) traffic on port 80 with Apache listening only to Varnish on port 8080. When Varnish needs a page to be built manually, it will pass the request on to Apache port 8080.
+
+This can be a bit confusing at first - but yes, we're essentially moving Apache behind the scenes. Varnish will act as the front door on port 80 for all your web requests. Apache will act in a supporting role for Varnish on port 8080. There's no public traffic on port 8080, only private requests from Varnish. If you're curious about how this relates to AWS security groups, there is no need to open port 8080.
+
+
+To get started, we need to install Varnish on our instance:
+
+sudo apt-get install varnish
+Edit Apache’s ports.conf file to listen on port 8080:
+
+1
+sudo nano /etc/apache2/ports.conf
+Here’s what it should look like:
+
+1
+Listen 8080
+Edit your Apache site configuration file to respond to port 8080:
+
+sudo nano /etc/apache2/sites-available/wordpress.conf
+Change the VirtualHost line from *:80 to *:8080
+
+<virtualhost *:8080>
+You may need to change your Apache default site to listen on port 8080 or disable it:
+
+
+sudo a2dissite 000-default
+Move the original Varnish configuration files to your home directory as backups (in case you decide to review them later):
+
+1
+2
+sudo mv /etc/default/varnish ~/default-varnish-old
+sudo mv /etc/varnish/default.vcl ~/varnish-default-vcl.old
+Replace the Varnish default configuration with the file available here on gist. You can use copy and paste. 
+
+1
+sudo nano /etc/default/varnish
+Then, replace the Varnish VCL configuration with the gist file here (again copy and paste).
+
+Warning: you may get VCL errors when you attempt to restart Varnish if you do not properly maintain line breaks when pasting. The line breaks can be hard to detect, so review it carefully. If there are errors when restarting Varnish, it's pretty good about telling you which line number to look at.
+
+sudo nano /etc/varnish/default.vcl
+Now, let’s restart Apache and Varnish:
+
+sudo service apache2 restart
+sudo service varnish restart
+Remember, if you get VCL errors at this point, it may be because of broken line-breaks from pasting in the Varnish default.vcl file.
+
+Visit your site at http://yourdomain.com and everything should begin working with Varnish. The second time you load a static page, it should be significantly faster.

@@ -1,0 +1,30 @@
+Other Things to Keep in Mind
+
+You're now a system administrator running your own WordPress site. Awesome. But, you're now responsible for a lot of things that are typically managed by a hosting company.
+
+There's no shaming in returning to managed hosting. If you feel you've gotten in over your head, feel free to retreat to WordPress.com or another host. We all make decisions where we spend our time - and managed hosting is a reasonable one. Once you commit to running your own site - keeping it running will take more of your time as will migrating to managed hosting later. So, be thoughtful about this.
+
+Security
+It's important to regularly log in to your instance and update security packages. When you login, Ubuntu will report something like: "35 packages can be updated. 22 updates are security updates." Use the following command to update the system:
+
+1
+sudo apt-get upgrade
+The recent heartbleed bug is a cautionary example of the kinds of vulnerabilities that need to be patched from time to time. If you don't keep your Linux system up to date, people may be able to hack your site.
+
+Keeping up with WordPress updates is equally important. The most recent versions of WordPress are configured to alert you to new upgrades.
+
+Backups
+No one is backing up your WordPress site. You need to choose how to do this. You can manually remember to create an AWS snapshot of your instance through the AWS interface. If you search online, you can find scripts to customize that do this from your Linux instance. Basically, you need to backup WordPress directory structure (with your themes, plugins and images),  the MySQL database stored in the Linux file system as well as your Apache site configuration file.
+
+Another approach that works well is a service such as VaultPress, owned by WordPress' parent company Automattic. There are also WordPress plugins you can purchase to run backups to other storage services, including Amazon's S3 storage system.
+
+Contact Forms
+WordPress contact forms require that you run your own mail server in order to email messages submitted to you. Running a Postfix mail server is quite complicated and has its own scaling and security risks. Instead, I like combining something like the Contact Form 7 Plugin with the Mailgun WordPress plugin. There's a bit of set up but it's free for most uses and works flawlessly.
+
+
+Advertisement
+Monitoring Solutions
+You're also responsible for managing your server's uptime. So, you need a monitoring service to tell you when Amazon instances go down. And, they do - rarely, but it happens. A paid service like ScoutApp.com or my own self-hosted Simple Monitor are good solutions. If you self-host your monitoring, it's important to run it on a different instance or at least turn on heartbeats at a frequent interval e.g. 2 hrs. If the instance your monitoring is on fails, you won't know until you notice that you didn't receive the last heartbeat.
+
+Search Engine Optimization
+This is a long topic we won't address entirely here. I've written more on this topic on my own site. The performance of your site also affects your search engine ranking.

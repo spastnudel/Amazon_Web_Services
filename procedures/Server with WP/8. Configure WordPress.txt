@@ -1,0 +1,22 @@
+Configure WordPress
+Now, we’re ready to tell WordPress about the database and your blog. First, we’ll temporarily change the permissions on your wordpress directory:
+
+cd /var/www
+sudo chmod -R 777 wordpress
+Open a web browser and navigate to your domain name e.g. http://yourdomain.com.
+
+Fill out the database information that WordPress requests using your choices above. The process will look something like this:
+
+
+Now, let’s lock down the permissions for the WordPress installation for security:
+
+sudo find /var/www/wordpress/ -type d -exec chmod 755 {} \;
+sudo find /var/www/wordpress/ -type f -exec chmod 644 {} \;
+Let’s also make manual updates to the wp-config.php file:
+
+sudo nano /var/www/wordpress/wp-config.php
+Add the following configuration lines above the stop editing line:
+
+define('FS_METHOD', 'direct'); // for automatic plugin installation
+/* That's all, stop editing! Happy blogging. */
+Try logging into the WordPress Administration system. Visit http://yourdomain.com/wp-admin and enter the user name and password you chose during the installation process.

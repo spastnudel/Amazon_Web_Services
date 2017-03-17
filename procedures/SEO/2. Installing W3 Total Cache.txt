@@ -1,0 +1,22 @@
+Installing W3 Total Cache 
+
+W3 Total Cache is an outstanding WordPress plugin. It’s free and provides a tremendous performance optimization for your site. You can learn more about W3 Total Cache at its plugin site.
+
+
+Log in to your WordPress administration page at http://yourdomain.com/wp-admin using the username and password you configured during setup. Select Plugins -> Add New from the left sidebar menu. Search for W3 Total Cache.
+
+Because of its power and sophistication, W3 Total Cache has a wide variety of settings which can seem overwhelming. Below, I provide some recommended settings that make getting started easier.
+
+Don’t get overwhelmed. Start with the General Settings shown below and go from there. If you're interested in starting more quickly, I’ve provided instructions for downloading my default settings and importing them (shown further below).
+
+Alternatively, W3 Total Cache offers paid installation and support from $150 and up. You can reach them through its plugin Dashboard page or their website. This is a great plugin so I feel good about recommending them. I've had some experience with their paid support and it is generally good.  You may also want to review the W3 Total Cache installation overview and FAQ on the plugin website for more details.
+
+At a high level, I recommend activating the following settings which I detail more fully below:
+
+Page Caching: Caches pages for faster loading and more efficient delivery (separate from Varnish).
+Minify: Shrinks and combines JS and CSS files for faster loading and more efficient delivery.
+Object Cache: Speeds up generation of content by WordPress.
+Browser Cache: Properly tags content so that browser clients minimize downloads of pages.
+Reverse Proxy: Instructs W3TC to purge the Varnish cache when posts, pages, et al. are updated.
+Amazon CloudFront CDN: Ensures the delivery of static files and images quickly, reliably and geographically near to your visitors.
+Miscellaneous: Use a sitemap index file to pre-cache high priority pages.

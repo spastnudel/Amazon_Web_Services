@@ -1,0 +1,20 @@
+Change The Default Port Used For SSH From 22
+Since hackers regularly look for SSH access on port 22, it's best to use a totally different port number for configuring and maintaining your server.
+
+Edit the SSH configuration file again:
+
+sudo nano /etc/ssh/sshd_config
+Change the Port line to a different port number e.g. 33322:
+
+# What ports, IPs and protocols we listen for
+Port 33322
+Return to the AWS console and edit the security group. Add the port # that you chose e.g. 33322. Remove port 22. Make sure to click the Apply Rules button  (not pictured); it’s below the Add Rule box.
+
+
+Restart the service:
+
+sudo service ssh restart
+Going forward, you’ll need to use -p 33322 (or your chosen port) when you connect via SSH:
+
+ssh -p 33322 -i .ssh/id_hal hal@ec2-xx-xx-xx-xx.compute-1.amazonaws.com
+There are even more advanced techniques for concealing your SSH login. e.g. Port knocking. However, be sure you know what you're doing, I've had sad users email me after they locked themselves out of their own server.

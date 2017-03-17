@@ -1,0 +1,159 @@
+A year or so ago, I had a hosting disaster. My hosting provider's server was hacked and it took them over a week to identify what the problem was and fix it.
+
+In the meantime, my clients' sites were all redirecting to a dating site and I was getting phone calls demanding that I fix things right away.
+
+I had to act fast. But instead of simply moving all of the sites as they were to a new server (and a new hosting provider, I might add), I decided to move the sites in a way which would make it easier for me to move them all again if I needed to. So I moved a number of sites with their own WordPress installation into my existing Multisite network, which I'd already moved to the new server.
+
+Moving single sites into a Multisite network is more complicated than just moving it to a fresh single site installation, but it isn't impossible. In this tutorial I'll show you two methods for doing it: using plugins, and manually.
+
+What You'll Need
+
+To follow this tutorial, you'll need:
+
+An installation of WordPress with an existing site running on it.
+A Multisite network of which you are the network administrator.
+For manual moves, you will need an FTP client, a code editor, and access to phpMyAdmin.
+Using a Plugin to Move a Site Into Multisite
+
+If your site doesn't have a lot of configuration set up via plugin, theme or site settings screens, you may be able to successfully move it using the WordPress Importer plugin. If the site has widgets, you can copy their settings across using the Widget Settings Importer/Exporter plugin.
+
+However if you've added a lot of bespoke configuration using settings or options screens or the theme customizer, none of these will be copied across. In this case you'll need to do a manual move.
+
+For full details of how to use these plugins to move your site, see my earlier tutorial on using plugins to move a WordPress site. The process is exactly the same for moving a site into a Multisite network as it is for a single site.
+
+Migrating a Site Into Multisite Manually
+
+The site you're moving into Multisite will have three components that you need to copy from the old site:
+
+theme and plugin files—you might copy these across or install them in the network if they aren't already installed
+uploads—you'll find these in wp-content/uploads in your old site, while in the Multisite installation they'll need to go into wp-content/uploads/sites/XX, where XX is your new site's ID in the network (more of which shortly)
+database tables
+Note: If the Multisite network you're moving your site into was created prior to WordPress 3.5, it won't have a sites folder. Instead you'll have a blogs.dir folder in wp-content with all of the upload files for the subsites. This will have a numbered folder for the site you're creating, which you copy your files into instead. I'll cover this in more detail below.
+
+Backing Up First
+Before you do anything like this, it's a good idea to back up the site you're moving and your Multisite installation. Use your preferred backup plugin, or a combination of FTP and phpMyAdmin if you prefer to work manually.
+
+You'll use this backup to copy the relevant files to your new site, and it also gives you some peace of mind in case you have any problems.
+
+Creating a New Site in the Network
+Before you can migrate your old site into Multisite, you'll need to create a new empty site in the network. Later you'll import everything from your old site into this new site.
+
+Create the site in the normal way, by going to Network Admin > Sites, clicking Add New, and entering the details of your new site.
+
+Finding the ID of Your New Site in the Multisite Network
+Each site in a Multisite network has its own unique numerical ID. This is used to identify its folder in the wp-content/uploads/sites directory (or wp-content/blogs.dir if your Multisite network is older—see above), and also to identify the database tables for that site.
+
+Find this by going to Network Admin > Sites and then selecting the Edit option for the site you've just created. The URL WordPress takes you to will give you the site's ID. The URL should be in the form http://mynetwork.com/wp-admin/network/site-info.php?id=XX.
+
+XX is the ID of your site, and will be the name of the folder containing its files, as well as the prefix for its database table names.
+
+Uploading Files to the New Site
+Identify the plugins used by your old site and either install them (if they're not already installed) in your WordPress network via the Plugins screen or upload them to wp-content/plugins from the backup you took of your old site.
+
+Do the same for any themes your site is using—copy them from your backup to the wp-content/themes directory of your network, or just reinstall them.
+
+Note: Themes and plugins are stored in one place for all sites in a Multisite network—you don't need to store them somewhere specific for the new site.
+
+Copy the uploads from your old site to the new one. The files you will need to copy are in wp-content/uploads in your old site. Where you upload them will depend on how old the network is:
+
+If the network was created after WordPress 3.5, it will have a sites folder in wp-content/uploads. Find the subfolder with your site's ID and upload the contents of the wp-content/uploads folder from your old site to that.
+If the network is an older one and has a blogs.dir folder, that will also contain a folder with your site's ID. That will then have a subfolder called files. Copy the contents of the wp-content/uploads folder from your old site to the files folder.
+Note: you may need to delete any folders WordPress has created for your new site in the sites or blogs.dir folder to avoid any clashes.
+
+Once you've done all this, activate any themes and plugins in your new site.
+
+Exporting Your Old Site's Tables
+WordPress Multisite uses separate database tables for each site in the network. Instead of storing the posts for your site in wp_posts, for example, it stores it in wp_XX_posts, where XX is your site's ID.
+
+However it doesn't use separate tables for user data—this is stored in one wp_users and wp_usermeta table for the whole network.
+
+This means that you'll need to copy all of the tables from your old site across except the two user tables, and you'll need to change the names of the files you're copying. Unfortunately you'll have to create the users manually in the new site using the WordPress admin screens.
+
+For more information on Multisite and database tables, see this tutorial on the WordPress database and Multisite.
+
+In PhpMyAdmin for your old site, click on the Structure tab. Then select all of the tables except wp_users and wp_usermeta. An example is shown below.
+
+Database tables selected ready for export
+Click on the With selected: dropdown box, select Export and then Go. This will download a sql file to your machine with the contents of those tables.
+
+Adding Users
+As I mentioned above, you can't copy the wp_users and wp_usermeta tables as these will be duplicated in the Multisite network. 
+
+Before you start to import the tables you've just downloaded, set up the same users in your new site as you had in your old one. Note that they will have different IDs in the Multisite network's database than they did in the old site, which may cause some inaccuracies with assigning posts to authors. You'll need to correct this at the end, which I'll cover later.
+
+Editing the Database Tables
+Make a copy of the sql file that's been downloaded to your machine and give it a name that tells you what it is (for example by adding copy to its name). Open it in a code editor.
+
+Editing Links
+
+Change all instances of the site's domain in the Multisite network to its new Multisite domain. For example if your site was at http://mysite.com, change it to http://network.com/mysite. If your network uses subdomains you'll need to change it to http://mysite.network.com. Save your file.
+
+Editing Table References
+
+The database tables in your new Multisite site will need prefixes for the site ID. In your sql file, replace all instances of wp_ with wp_XX_, where XX is your site ID.
+
+Now save the sql file.
+
+Importing Tables to the New Database
+Now that you've installed your themes and plugins and exported your data, you need to import the database tables to the Multisite network.
+
+Dropping the Existing Tables
+
+Before you upload the tables from your old site, you'll need to delete the duplicate ones which WordPress has added to your new site.
+
+In phpMyAdmin, drop any tables which are prefixed with wp_XX_, where XX is your site ID. These will include the following, but may also include tables created by plugins:
+
+wp_XX_commentmeta
+wp_XX_comments
+wp_XX_links
+wp_XXoptions
+wp_postmeta
+wp_posts
+wp_terms
+wp_term_relationships
+wp_term_taxonomy
+Select those tables (plus any wp_XX_ tables created by plugins), click the With selected: dropdown menu, select Drop and then Yes.
+
+The example below includes one extra table that's been created by a plugin:
+
+database tables selected ready to be dropped
+Important: If your old site had database tables that were created by plugins, you must install those same plugins on the network before importing the new database. The import will include these tables, which won't work unless the plugin has been installed.
+
+Uploading the Database Tables
+
+Next upload the database you've edited:
+
+Click the Import tab.
+Click the Choose file button.
+Select the sql file you've edited and click Choose or OK.
+Click the Go button.
+After a while (depending on the size of your database), you will see a message telling you the upload has successfully finished.
+Final Steps
+Clear your browser's cache. This avoids any problems you may have if the browser has cached content from the old site.
+
+Now log in to the WordPress admin for the remote site. If you moved the user tables across, your login details will be the same as for your old site, but if you didn't, these will be whatever you specified when you installed WordPress in the new location.
+
+Visit the Permalinks screen for your new site and turn pretty permalinks back on.
+
+Look at your main Posts screen and check which authors have been assigned to them—there's a good chance that this will be wrong. You can change this in bulk:
+
+Select all posts which should be assigned to a given author.
+Click Bulk Actions and Edit.
+Click Apply.
+In the pane that appears, select the correct author from the dropdown box.
+Click Update.
+The editing pane is shown in the screenshot:
+
+Posts screen showing bulk editing actions
+If your site has pages and custom post types, repeat the above for those.
+
+Check that all your links are working ok and that widgets and plugins are behaving as they should. If not, you can either step back through the process, using your backups where you need to, or simply set up the plugins and widgets from within your new site.
+
+
+Advertisement
+Setting Up Domain Mapping
+If you want to keep the same domain name you were using for the site when it was in a single site installation, you can use the domain mapping plugin to do this. Install the plugin, activate it for your network, and then follow the instructions given by the plugin to set it up. This will involve making changes to your domain's DNS settings.
+
+Summary
+
+Moving a site into a WordPress Multisite network from its own installation isn't something you can do quickly or without being very thorough, but it is possible and I've done it a few times. Just follow the steps given here and make sure you have backups in case of any problems, and you should find it works smoothly for you.

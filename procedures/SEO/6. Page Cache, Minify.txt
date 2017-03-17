@@ -1,0 +1,35 @@
+Page Cache Settings
+From the left sidebar, click Performance -> Page Cache. Scroll down to the Cache Preload box. Enable “Automatically prime the page cache”. Enter your sitemap URL. 
+
+Note: You will need to have installed the Better WordPress Google XML Sitemaps plugin before this will function properly.
+
+
+If you use a CAPTCHA on contact forms, you’ll want to include the path to these pages in the cache exclusion. Caching a CAPTCHA will break the functionality. Scroll down to the Advanced Setting box. Add your file path e.g. contacts here:
+
+
+User Agent Groups
+
+Because my theme is responsive, I cache mobile and tablet user agents separately. In other words, Varnish caches copies of various responsive layouts of my site. When a mobile user comes to the site, they get a specific file vs. when a desktop user arrives. If your site content is dynamically responsive (e.g. only changes in Javascript and CSS), you won't need to do this.  
+
+If you wish to do this, enable High and Low User Agent Groups:
+
+
+Referrer Groups
+
+I also enable Referrer Groups for search engines:
+
+
+Minify Settings
+Minify compresses your HTML, JS and CSS code and combines files when possible. This speeds up delivery of your pages and reduces bandwidth. However, it can sometimes break theme code.
+
+You may have to adjust the settings for your chosen theme. I found that by turning off inline CSS minification, my theme works well. From the left sidebar, click Performance -> Minify:
+
+
+Importing Example Settings (Optional)
+If you prefer to start by importing my settings file, follow these steps:
+
+Download the example settings file
+Visit the W3TC General Settings e.g. left sidebar, Performance -> General Settings and scroll to the bottom area with Import/Export Settings (see below).
+Beside Import configuration, click Choose File and select the example settings file you downloaded. Then, click upload.
+Browse your W3TC settings and ensure they make sense for your WordPress site.
+You may need to customize settings for your site after the import e.g. Google PageSpeed, Amazon CloudFront CDN, etc.

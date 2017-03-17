@@ -1,0 +1,17 @@
+Installing WordPress
+
+It’s time for the fun part of installing the open source version of WordPress. Full instructions are supplied in more detail at WordPress’ Codex.
+
+Upgrade to the latest Ubuntu distribution and its packages:
+
+sudo apt-get dist-upgrade
+Create a www directory with permissions for the Apache web server:
+
+sudo mkdir /var/www
+sudo chown www-data:www-data /var/www
+cd /var/www
+Download the latest version of WordPress, expand the archive and set permissions:
+
+sudo wget http://wordpress.org/latest.tar.gz
+sudo tar -xzvf latest.tar.gz
+sudo chown -R www-data:www-data wordpress

@@ -1,0 +1,15 @@
+Install MySQL Server
+
+Install the MySQL Server package:
+
+sudo apt-get install mysql-server
+You’ll be asked to provide a user name and password. Make note of your choices for use during the setup process.
+
+Configure the MySQL Database. Change user name and password below to whatever you selected during the installation:
+
+mysql -u root -p
+create database wordpress;
+grant all privileges on wordpress.* TO "your-mysql-username"@"localhost" identified by "your-mysql-password";
+flush privileges;
+exit;
+Later, you will want to review securing your MySQL server. I have a short synopsis on my site here.

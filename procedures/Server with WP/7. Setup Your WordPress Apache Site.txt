@@ -1,0 +1,26 @@
+Setup Your WordPress Apache Site
+If you did not choose an Amazon AWS AMI which pre-installed Apache, you may need to install it now:
+
+sudo apt-get install php5 libapache2-mod-php5 libapache2-mod-auth-mysql php5-mysql
+Now, it’s time to create a site configuration file for your Apache server to host WordPress:
+
+cd /etc/apache2/sites-available
+Let’s create a new file to edit. Note: in new versions of Ubuntu 14.04, the site configuration file should end in .conf. If the file is simply named wordpress as in past versions of this tutorial, a2ensite below will not work.
+
+sudo nano wordpress.conf
+Paste in the sample site file below and be sure to replace the naming convention for your domain name:
+
+<VirtualHost *:80>
+   ServerName YOURDOMAIN.COM
+   DocumentRoot /var/www/wordpress
+   DirectoryIndex index.php
+   <Directory /var/www/wordpress/>
+      AllowOverride All
+      Order Deny,Allow
+      Allow from all
+   </Directory>
+</VirtualHost>
+Tell Apache to enable the site and reload:
+
+sudo a2ensite wordpress
+sudo service apache2 restart

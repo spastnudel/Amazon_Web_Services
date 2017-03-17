@@ -1,0 +1,15 @@
+Turn Off SSH Access for Default Root Account
+Edit the SSH configuration file again:
+
+sudo nano /etc/ssh/sshd_config
+Remove the ubuntu account from the AllowUsers field:
+
+AllowUsers hal
+Make sure PermitRootLogin is set to no or without-password, the latter requires logging in with a key:
+
+1
+PermitRootLogin without-password
+Restart the ssh service
+
+sudo service ssh restart
+If you encounter difficulty, you can also go back to logging in through the AWS console instance list.

@@ -1,0 +1,22 @@
+General Settings
+W3TC generally works well with its default settings. So, we’ll primarily need to configure the General Settings page and not go into each individual feature area.
+
+Visit the W3TC General Settings page. From the left sidebar, click Performance -> General Settings. We can perform high level set up here but then we’ll also do more detailed set up on individual settings pages. I leave off (unchecked) “Toggle all caching types on or off (at once)” in the general box.
+
+Enable Page Cache with Opcode Alternative PHP Cache (APC):
+
+
+Enable Minify with the following settings. I use manual mode because minify can break some themes if your settings are too aggressive (however, your chosen theme may work fine):
+
+
+I leave unchecked/off Database Caching as this is recommended only if you do not activate Object Caching.
+
+Enable the Object Cache:
+
+
+Enable the Browser Cache:
+
+
+Enable Reverse Proxy:
+
+Configure W3TC to regularly purge the Varnish Cache from 127.0.0.1 (localhost).

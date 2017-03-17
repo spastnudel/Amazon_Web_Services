@@ -1,0 +1,8 @@
+Securing Your Instance
+
+While AWS provides its own firewall, there are still things you can do to minimize security risks. Here are three things I recommend:
+
+1. Create an Alternate User Account to the Default root (ubuntu) Login
+2. Turn off SSH Access for Default root (ubuntu) Account
+3. Change the Default Port Used for SSH From 22
+Warning: Please follow these directions extremely carefully. Deviating slightly from these steps may create problems - including even making your instance inaccessible.

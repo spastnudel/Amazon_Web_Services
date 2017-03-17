@@ -1,0 +1,7 @@
+Reviewing Configuration Status
+At this point, it’s useful to visit the W3TC plugin Dashboard and check that all the proper components are active. But first, we need to enable Fancy Permalinks for URL formats, which will optimize our site for search engine indexing. From the WordPress Admin Dashboard, select Settings -> Permalinks, choose Day and Name and click Save Changes. 
+
+Then, from the left sidebar, click Performance -> Dashboard, then click the Compatibility Check button. It should look something like this:
+
+
+Note: you may save some time if you choose a theme and install the other plugins you plan to use before completing the rest of the W3 Total Cache configuration process. Changing themes and adding plugins will likely require you to purge and retest your W3 Total Cache settings.

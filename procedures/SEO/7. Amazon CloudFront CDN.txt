@@ -1,0 +1,4 @@
+Using The Amazon CloudFront CDN
+It’s definitely worthwhile to activate a CDN. The CDN Is very helpful for reducing the overall load on your server. For example, W3TC can redirect requests for images and static files such as scripts and css to Amazon's CDN.
+
+If you wish to do so, follow the instructions on my site for Activating the Amazon CloudFront. I'm currently using the Pull method (my tutorial describes the older Push method).

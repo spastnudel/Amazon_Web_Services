@@ -1,0 +1,60 @@
+Create an Alternate User Account
+We’ll add a user named “hal”. Replace “hal” with your preferred username in the examples below:
+
+sudo adduser hal
+Add your new user to the admin group:
+
+sudo adduser hal admin
+Add your new user to the sudoers group. Edit the sudoers file:
+
+sudo nano /etc/sudoers
+Add, this line to the sudoers file, in the user privileges section:
+
+hal ALL=(ALL) NOPASSWD:ALL
+Now, we’ll create keys for this user so they can login to AWS. Switch to the new user:
+
+su hal
+Change to the home directory for this user:
+
+cd /home/hal
+Make an SSH directory and set permissions:
+
+mkdir .ssh
+chmod 700 .ssh
+Generate a new key pair:
+
+cd .ssh
+ssh-keygen -b 1024 -f id_hal -t dsa
+Add public key to authorized_keys file:
+
+cat ~/.ssh/id_hal*.pub > ~/.ssh/authorized_keys
+Set permissions:
+
+chmod 600 ~/.ssh/*
+Move the private key to a temp folder for download to your computer:
+
+cp ~/.ssh/* /tmp
+chmod 644 /tmp/*
+Edit the SSH config file to add the new user:
+
+sudo nano /etc/ssh/sshd_config
+Add the new hal account to the AllowUsers field (or create the line if it’s not there):
+
+AllowUsers ubuntu hal
+Restart the service
+
+sudo service ssh restart
+Now, switch back to your local computer using Terminal. Download the new key from your computer using your ubuntu account:
+
+scp -i ~/.ssh/wordpress.pem ubuntu@ec2-xx-xx-xx-xx.compute-1.amazonaws.com:/tmp/* ~/.ssh
+Continue these steps on your local computer. Set permissions and test:
+
+cd ~/.ssh
+chmod 400 id_hal
+ssh -i .ssh/id_hal hal@ec2-xx-xx-xx-xx.compute-1.amazonaws.com
+If you run into any errors, you can try to return to your server instance and look at the log on while you attempt to login:
+
+tail -f /var/log/auth.log
+On the remote server instance, remove the key files from the tmp directory:
+
+rm -rf /tmp/*
